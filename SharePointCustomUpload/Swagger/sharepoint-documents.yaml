@@ -1,0 +1,90 @@
+---
+swagger: "2.0"
+info:
+  description: "This will have operations to upload files to SharePoint."
+  version: "1.0.0"
+  title: "SharePoint Upload document"
+host: "5555"
+basePath: "/api"
+tags:
+- name: "SharePoint documents"
+schemes:
+- "http"
+paths:
+  /sharepoint_documents/v1/:
+    post:
+      description: "This will uploads a document to SharePoint."
+      operationId: "uploadDocuments"
+      consumes:
+      - "application/octet-stream"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "documentBody"
+        in: "body"
+        description: "The actual image"
+        required: true
+        schema:
+          type: "object"
+      responses:
+        200:
+          description: "OK - Your request was successfully completed."
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+        405:
+          description: "Method Not Allowed"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+        504:
+          description: "Timeout"
+      x-swagger-router-controller: "SharePointDocuments"
+definitions:
+  Error:
+    type: "object"
+    properties:
+      apiVersion:
+        type: "string"
+        example: "1.0.0"
+        description: "The version of the API which returned this error"
+      id:
+        type: "string"
+        example: "AB123D123C123F123E123D"
+        description: "The id of the API which returned this error"
+      error:
+        $ref: "#/definitions/Error_error"
+  Err:
+    type: "object"
+    properties:
+      reason:
+        type: "string"
+        example: "InvalidDateRange"
+        description: "Machine readable error reason"
+      message:
+        type: "string"
+        example: "You specified a date in the future"
+        description: "User readable description of the HTTP status code"
+  Error_error:
+    properties:
+      code:
+        type: "integer"
+        example: 400
+        description: "The error code"
+      message:
+        type: "string"
+        example: "Your request was invalid"
+        description: "The error response message"
+      errors:
+        type: "array"
+        description: "Array of underlying errors"
+        items:
+          $ref: "#/definitions/Err"
