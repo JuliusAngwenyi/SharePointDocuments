@@ -22,7 +22,7 @@ paths:
       parameters:
       - name: "documentBody"
         in: "body"
-        description: "The actual image"
+        description: "The actual document to upload"
         required: true
         schema:
           type: "object"
